@@ -2,6 +2,7 @@ import AdbIcon from '@mui/icons-material/Adb'
 import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material'
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
+import { baseBrowseRoutes } from '../../../core/config/browse-routes.config'
 import { headerMenu } from './header.data'
 import { linkMenu, linksContainer, logoIcon, logoText, toolbar } from './style.sx'
 
@@ -11,7 +12,7 @@ const Header: FC = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={toolbar}>
           <AdbIcon sx={logoIcon} />
-          <Typography variant="h6" noWrap component="a" href="/" sx={logoText}>
+          <Typography variant="h6" noWrap component={Link} to={baseBrowseRoutes.home()} sx={logoText}>
             AndroidDB
           </Typography>
           <Box sx={linksContainer}>

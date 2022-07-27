@@ -2,16 +2,19 @@ import { FC } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import {
   applicationBrowseRoutes,
+  baseBrowseRoutes,
   categoryBrowseRoutes,
   developerBrowseRoutes,
   tagBrowseRoutes,
 } from '../core/config/browse-routes.config'
-import { ApplicationIndex, CategoryIndex, DeveloperIndex, NotFoundPage, TagIndex } from '../pages'
+import { ApplicationIndex, CategoryIndex, DeveloperIndex, HomePage, NotFoundPage, TagIndex } from '../pages'
 
 const AppRouter: FC = () => {
   return (
     <Routes>
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path={baseBrowseRoutes.home()} element={<HomePage />} />
+
+      <Route path={baseBrowseRoutes.notFound()} element={<NotFoundPage />} />
 
       <Route path={applicationBrowseRoutes.index()} element={<ApplicationIndex />} />
 

@@ -1,3 +1,8 @@
+export const baseBrowseRoutes = {
+  notFound: () => '*',
+  home: () => '/',
+}
+
 export const applicationBrowseRoutes = {
   index: () => '/applications',
   create: () => `/application/create`,

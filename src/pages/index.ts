@@ -7,6 +7,7 @@ export { default as CategoryIndex } from './category/categoryIndex/CategoryIndex
 export { default as DeveloperCreate } from './developer/developerCreate/DeveloperCreate'
 export { default as DeveloperEdit } from './developer/developerEdit/DeveloperEdit'
 export { default as DeveloperIndex } from './developer/developerIndex/DeveloperIndex'
+export { default as HomePage } from './main/HomePage'
 export { default as NotFoundPage } from './main/NotFoundPage'
 export { default as TagCreate } from './tag/tagCreate/TagCreate'
 export { default as TagEdit } from './tag/tagEdit/TagEdit'
