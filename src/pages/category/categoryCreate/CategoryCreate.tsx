@@ -1,10 +1,11 @@
 import { FC } from 'react'
+import { PageHeader, PageTitle } from '../../../components/ui'
 import { AdminLayout } from '../../../layouts'
 
 const CategoryCreate: FC = () => {
   return (
     <AdminLayout>
-      <div>CategoryCreate</div>
+      <PageHeader left={<PageTitle title="Добавить категорию" />} showBackButton />
     </AdminLayout>
   )
 }

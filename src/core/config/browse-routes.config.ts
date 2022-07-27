@@ -30,3 +30,10 @@ export const developerBrowseRoutes = {
   view: (to: string | number = ':developerId') => `/developer/view/${to}`,
   edit: (to: string | number = ':developerId') => `/developer/edit/${to}`,
 }
+
+export const fileBrowseRoutes = {
+  index: () => '/files',
+  create: () => `/file/create`,
+  view: (to: string | number = ':fileId') => `/file/view/${to}`,
+  edit: (to: string | number = ':fileId') => `/file/edit/${to}`,
+}

@@ -1,10 +1,11 @@
 import { FC } from 'react'
+import { PageHeader, PageTitle } from '../../../components/ui'
 import { AdminLayout } from '../../../layouts'
 
 const DeveloperCreate: FC = () => {
   return (
     <AdminLayout>
-      <div>DeveloperCreate</div>
+      <PageHeader left={<PageTitle title="Добавить разработчика" />} showBackButton />
     </AdminLayout>
   )
 }

@@ -1,10 +1,11 @@
 import { FC } from 'react'
+import { PageHeader, PageTitle } from '../../../components/ui'
 import { AdminLayout } from '../../../layouts'
 
 const TagCreate: FC = () => {
   return (
     <AdminLayout>
-      <div>TagCreate</div>
+      <PageHeader left={<PageTitle title="Добавить тэг" />} showBackButton />
     </AdminLayout>
   )
 }
