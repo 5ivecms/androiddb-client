@@ -1,16 +1,22 @@
 import { useMemo } from 'react'
 import { useQuery } from 'react-query'
-import { ApplicationService } from '../../services/application.service'
+import { useParams } from 'react-router-dom'
+import { ApplicationService } from '../../services'
 
-export const useApplications = () => {
-  const queryData = useQuery(['applications list'], () => ApplicationService.findAll(), {
-    select: ({ data }) => {
-      return data
-    },
-    onError: (error) => {
-      console.log(JSON.stringify(error))
-    },
-  })
+export const useApplication = () => {
+  const params = useParams()
+  const { applicationId } = params
+
+  const queryData = useQuery(
+    ['find one application', applicationId],
+    () => ApplicationService.findOne(Number(applicationId)),
+    {
+      select: ({ data }) => data,
+      onError: (error) => {
+        console.log(JSON.stringify(error))
+      },
+    }
+  )
 
   return useMemo(() => ({ ...queryData }), [queryData])
 }

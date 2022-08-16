@@ -1,4 +1,5 @@
 import { CssBaseline } from '@mui/material'
+import { SnackbarProvider } from 'notistack'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -19,9 +20,18 @@ root.render(
   <React.StrictMode>
     <CssBaseline />
     <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
+      <SnackbarProvider
+        maxSnack={5}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        autoHideDuration={2000}
+      >
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </SnackbarProvider>
     </BrowserRouter>
   </React.StrictMode>
 )
