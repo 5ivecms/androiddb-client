@@ -12,6 +12,7 @@ export interface DataTableHeaderColumnProps {
   numeric: boolean
   width?: string
   render?: (data: any) => ReactNode
+  loadOptions?: (term: string) => Promise<any>
 }
 
 export interface DataTableHeadProps {
@@ -26,6 +27,7 @@ export interface DataTableFilterProps {
   columns: any[]
   onInputChange: (e: ChangeEvent<HTMLInputElement>) => void
   onSelectChange: (e: SelectChangeEvent) => void
+  onAutocompleteChange: (_: any, value: any) => void
   search: any
 }
 

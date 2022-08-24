@@ -42,6 +42,7 @@ const ApplicationEdit: FC = () => {
                     />
                   </FormControl>
                 </Grid>
+
                 <Grid item xs={6}>
                   <FormControl fullWidth sx={{ mb: 3 }}>
                     <TextField
@@ -53,6 +54,7 @@ const ApplicationEdit: FC = () => {
                     />
                   </FormControl>
                 </Grid>
+
                 <Grid item xs={6}>
                   <FormControl fullWidth sx={{ mb: 3 }}>
                     <TextField
@@ -64,6 +66,7 @@ const ApplicationEdit: FC = () => {
                     />
                   </FormControl>
                 </Grid>
+
                 <Grid item xs={6}>
                   <FormControl fullWidth sx={{ mb: 3 }}>
                     <TextField
@@ -75,30 +78,50 @@ const ApplicationEdit: FC = () => {
                     />
                   </FormControl>
                 </Grid>
+
                 <Grid item xs={6}>
                   <FormControl fullWidth sx={{ mb: 3 }}>
                     <AsyncAutocomplete
                       name="developerId"
                       label="Разработчик"
                       size="medium"
-                      searchFunc={(term) => DeveloperService.search({ search: { name: term } })}
+                      loadOptions={(term) => DeveloperService.search({ search: { name: term } })}
+                      onChange={() => console.log()}
                     />
                   </FormControl>
                 </Grid>
+
+                <Grid item xs={6}>
+                  <FormControl fullWidth sx={{ mb: 3 }}>
+                    <TextField
+                      {...register('lang')}
+                      label="Язык"
+                      placeholder="Язык"
+                      error={!!errors.lang}
+                      helperText={!!errors.lang && errors.lang.message}
+                    />
+                  </FormControl>
+                </Grid>
+
                 <Grid item xs={12}>
                   <FormControl fullWidth sx={{ mb: 3 }}>
                     <TextEditor control={control} name="description" defaultValue={data.description} />
                   </FormControl>
                 </Grid>
+
                 <Grid item xs={12}>
                   <FormControl fullWidth sx={{ mb: 3 }}>
                     <TextEditor control={control} name="shortDescription" defaultValue={data.shortDescription} />
                   </FormControl>
                 </Grid>
+
                 <Grid item xs={12}>
                   <MultipleFileUploadField />
                 </Grid>
               </Grid>
+
+              <Grid item xs={12}></Grid>
+
               <Button variant="contained" type="submit">
                 Сохранить
               </Button>

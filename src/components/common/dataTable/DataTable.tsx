@@ -13,6 +13,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
+import { object } from 'dot-object'
 import { ChangeEvent, FC, MouseEvent, useCallback, useMemo, useState } from 'react'
 import { DataTableProps } from './data-table.interfaces'
 import DataTableDeleteDialog from './DataTableDeleteDialog'
@@ -118,6 +119,16 @@ const DataTable: FC<DataTableProps> = ({
     [updateSearch]
   )
 
+  const onAutocompleteChange = useCallback(
+    (name: string, value: string) => {
+      const params = { ...search, [name]: value }
+      const newParams = Object.keys(params).filter((param) => params[param] !== '')
+      const newSearch = newParams.reduce((acc, item) => ({ ...acc, [item]: params[item] }), {})
+      setSearch({ ...object(newSearch) })
+    },
+    [search, setSearch]
+  )
+
   const handleResetFilter = useCallback(() => {
     setSearch({})
   }, [setSearch])
@@ -179,6 +190,7 @@ const DataTable: FC<DataTableProps> = ({
                     <DataTableFilter
                       onInputChange={onInputChange}
                       onSelectChange={onSelectChange}
+                      onAutocompleteChange={onAutocompleteChange}
                       columns={columns}
                       search={search}
                     />

@@ -22,6 +22,8 @@ const ApplicationView: FC = () => {
     return null
   }
 
+  console.log(data)
+
   return (
     <AdminLayout>
       <PageHeader left={<PageTitle title={data.title} />} showBackButton />

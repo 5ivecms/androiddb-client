@@ -1,8 +1,15 @@
 import { MenuItem, Select, SxProps, TableCell, TextField } from '@mui/material'
 import { FC, memo } from 'react'
+import AsyncAutocomplete from '../asyncAutocomplete/AsyncAutocomplete'
 import { DataTableFilterProps } from './data-table.interfaces'
 
-const DataTableFilter: FC<DataTableFilterProps> = ({ columns, search, onInputChange, onSelectChange }) => {
+const DataTableFilter: FC<DataTableFilterProps> = ({
+  columns,
+  search,
+  onInputChange,
+  onSelectChange,
+  onAutocompleteChange,
+}) => {
   return (
     <>
       {columns.map((column, index) => {
@@ -34,7 +41,15 @@ const DataTableFilter: FC<DataTableFilterProps> = ({ columns, search, onInputCha
                 <MenuItem value={`3`}>Завершен</MenuItem>
               </Select>
             )}
-            {/* {column.fieldType === 'autocomplete' && <AsyncAutocomplete />} */}
+            {column.fieldType === 'autocomplete' && (
+              <AsyncAutocomplete
+                label={column.headerName}
+                size="small"
+                name={column.field}
+                loadOptions={column.loadOptions}
+                onChange={onAutocompleteChange}
+              />
+            )}
           </TableCell>
         )
       })}
