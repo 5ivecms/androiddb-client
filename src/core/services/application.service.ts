@@ -1,29 +1,46 @@
+import type { AxiosResponse } from 'axios'
 import QueryString from 'qs'
+
 import { axiosPublic } from '../api/api.instances'
 import { applicationsApiUrl } from '../config/api-routes.config'
-import { Application, ApplicationSearch, ApplicationUpdateDto } from '../models'
-import { FindAllResponse, SearchParams } from '../types'
+import type {
+  Application,
+  ApplicationSearch,
+  ApplicationUpdateDto
+} from '../models'
+import type { FindAllResponse } from '../types'
+import type { SearchParams } from '../types/search-options'
 
 export const ApplicationService = {
-  search: (params: SearchParams<ApplicationSearch>) => {
-    return axiosPublic.get<FindAllResponse<Application>>(applicationsApiUrl.search(), {
+  findAll: (
+    params: SearchParams<ApplicationSearch> = {}
+  ): Promise<AxiosResponse<Application[]>> => {
+    return axiosPublic.get<Application[]>(applicationsApiUrl.findAll(), {
       params,
-      paramsSerializer: (params) => QueryString.stringify(params),
+      paramsSerializer: () => QueryString.stringify(params)
     })
   },
 
-  findOne: (id: number) => {
+  findOne: (id: number): Promise<AxiosResponse<Application>> => {
     return axiosPublic.get<Application>(applicationsApiUrl.findOne(id))
   },
 
-  findAll: (params: SearchParams<ApplicationSearch> = {}) => {
-    return axiosPublic.get<Application[]>(applicationsApiUrl.findAll(), {
-      params,
-      paramsSerializer: (params) => QueryString.stringify(params),
-    })
+  search: (
+    params: SearchParams<ApplicationSearch>
+  ): Promise<AxiosResponse<FindAllResponse<Application>>> => {
+    return axiosPublic.get<FindAllResponse<Application>>(
+      applicationsApiUrl.search(),
+      {
+        params,
+        paramsSerializer: () => QueryString.stringify(params)
+      }
+    )
   },
 
-  update: (id: number, data: ApplicationUpdateDto) => {
+  update: (
+    id: number,
+    data: ApplicationUpdateDto
+  ): Promise<AxiosResponse<Application>> => {
     return axiosPublic.patch(applicationsApiUrl.update(id), data)
-  },
+  }
 }

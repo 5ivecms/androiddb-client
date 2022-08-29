@@ -1,39 +1,60 @@
 import { Checkbox, TableCell, TableRow } from '@mui/material'
-import { FC, memo } from 'react'
-import ActionCell from './ActionCell'
-import { DataTableRowProps } from './data-table.interfaces'
+import type { FC, ReactElement } from 'react'
+import { memo, useContext } from 'react'
 
-const DataTableRow: FC<DataTableRowProps> = ({ fields, row, onSelect, selected, onDelete, actions = {}, ...rest }) => {
+import { getKeys } from '../../../core/utils/object/get-keys'
+import ActionCell from './ActionCell'
+import type { DataTableRowProps } from './data-table.interfaces'
+import { DataTableContext } from './DataTableContext'
+
+const DataTableRow: FC<DataTableRowProps> = ({
+  row,
+  selected,
+  onSelect,
+  onDelete
+}): ReactElement => {
+  const { fields } = useContext(DataTableContext)
+
   return (
-    <TableRow hover role="checkbox" tabIndex={-1} aria-checked={selected} selected={selected} {...rest}>
+    <TableRow
+      aria-checked={selected}
+      role="checkbox"
+      selected={selected}
+      tabIndex={-1}
+      hover
+    >
       <TableCell padding="checkbox">
-        <Checkbox color="primary" onClick={onSelect(row.id)} checked={selected} />
+        <Checkbox
+          checked={selected}
+          color="primary"
+          onClick={onSelect(row.id)}
+        />
       </TableCell>
-      {Object.keys(fields).map((field) => {
-        if (fields[field].render) {
+
+      {getKeys(fields).map((field) => {
+        if (fields[field]?.render) {
+          const renderFunc = fields[field].render
           return (
-            <TableCell width={`${fields[field]}`} key={`row-${field}`}>
-              {fields[field].render(row)}
+            <TableCell
+              key={`row-${field}`}
+              width={`${fields[field]?.width ?? `100%`}`}
+            >
+              {renderFunc && renderFunc(row)}
             </TableCell>
           )
         }
         return (
-          <TableCell width={`${fields[field]}`} key={`row-${field}`}>
+          <TableCell
+            key={`row-${field}`}
+            width={`${fields[field]?.width ?? `100%`}`}
+          >
             {row[field] ?? ''}
           </TableCell>
         )
       })}
-      {Object.keys(actions) && (
-        <TableCell width={120}>
-          <ActionCell
-            itemId={row.id}
-            deleteAction={actions?.canDelete}
-            viewUrl={actions?.view && `${actions?.view?.url}${row[actions?.view?.field]}`}
-            editUrl={actions?.edit && `${actions?.edit?.url}${row[actions?.edit?.field]}`}
-            onDelete={onDelete}
-          />
-        </TableCell>
-      )}
+      <TableCell width={120}>
+        <ActionCell itemId={row.id} onDelete={onDelete} />
+      </TableCell>
     </TableRow>
   )
 }

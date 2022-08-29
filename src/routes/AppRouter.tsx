@@ -1,62 +1,84 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { Route, Routes } from 'react-router-dom'
+
 import {
   applicationBrowseRoutes,
   baseBrowseRoutes,
   categoryBrowseRoutes,
   developerBrowseRoutes,
   fileBrowseRoutes,
-  tagBrowseRoutes,
+  tagBrowseRoutes
 } from '../core/config/browse-routes.config'
 import {
   ApplicationCreate,
   ApplicationEdit,
   ApplicationIndex,
-  ApplicationView,
+  ApplicationView
+} from '../pages/application'
+import {
   CategoryCreate,
   CategoryEdit,
   CategoryIndex,
-  CategoryView,
+  CategoryView
+} from '../pages/category'
+import {
   DeveloperCreate,
   DeveloperEdit,
   DeveloperIndex,
-  DeveloperView,
-  FileIndex,
-  HomePage,
-  NotFoundPage,
-  TagCreate,
-  TagEdit,
-  TagIndex,
-  TagView,
-} from '../pages'
+  DeveloperView
+} from '../pages/developer'
+import { FileIndex } from '../pages/file'
+import { HomePage, NotFoundPage } from '../pages/main'
+import { TagCreate, TagEdit, TagIndex, TagView } from '../pages/tag'
 
 const AppRouter: FC = () => {
   return (
     <Routes>
-      <Route path={baseBrowseRoutes.home()} element={<HomePage />} />
-      <Route path={baseBrowseRoutes.notFound()} element={<NotFoundPage />} />
+      <Route element={<HomePage />} path={baseBrowseRoutes.home()} />
+      <Route element={<NotFoundPage />} path={baseBrowseRoutes.notFound()} />
 
-      <Route path={applicationBrowseRoutes.index()} element={<ApplicationIndex />} />
-      <Route path={applicationBrowseRoutes.create()} element={<ApplicationCreate />} />
-      <Route path={applicationBrowseRoutes.view()} element={<ApplicationView />} />
-      <Route path={applicationBrowseRoutes.edit()} element={<ApplicationEdit />} />
+      <Route
+        element={<ApplicationIndex />}
+        path={applicationBrowseRoutes.index()}
+      />
+      <Route
+        element={<ApplicationCreate />}
+        path={applicationBrowseRoutes.create()}
+      />
+      <Route
+        element={<ApplicationView />}
+        path={applicationBrowseRoutes.view()}
+      />
+      <Route
+        element={<ApplicationEdit />}
+        path={applicationBrowseRoutes.edit()}
+      />
 
-      <Route path={categoryBrowseRoutes.index()} element={<CategoryIndex />} />
-      <Route path={categoryBrowseRoutes.create()} element={<CategoryCreate />} />
-      <Route path={categoryBrowseRoutes.view()} element={<CategoryView />} />
-      <Route path={categoryBrowseRoutes.edit()} element={<CategoryEdit />} />
+      <Route element={<CategoryIndex />} path={categoryBrowseRoutes.index()} />
+      <Route
+        element={<CategoryCreate />}
+        path={categoryBrowseRoutes.create()}
+      />
+      <Route element={<CategoryView />} path={categoryBrowseRoutes.view()} />
+      <Route element={<CategoryEdit />} path={categoryBrowseRoutes.edit()} />
 
-      <Route path={tagBrowseRoutes.index()} element={<TagIndex />} />
-      <Route path={tagBrowseRoutes.create()} element={<TagCreate />} />
-      <Route path={tagBrowseRoutes.view()} element={<TagView />} />
-      <Route path={tagBrowseRoutes.edit()} element={<TagEdit />} />
+      <Route element={<TagIndex />} path={tagBrowseRoutes.index()} />
+      <Route element={<TagCreate />} path={tagBrowseRoutes.create()} />
+      <Route element={<TagView />} path={tagBrowseRoutes.view()} />
+      <Route element={<TagEdit />} path={tagBrowseRoutes.edit()} />
 
-      <Route path={developerBrowseRoutes.index()} element={<DeveloperIndex />} />
-      <Route path={developerBrowseRoutes.create()} element={<DeveloperCreate />} />
-      <Route path={developerBrowseRoutes.view()} element={<DeveloperView />} />
-      <Route path={developerBrowseRoutes.edit()} element={<DeveloperEdit />} />
+      <Route
+        element={<DeveloperIndex />}
+        path={developerBrowseRoutes.index()}
+      />
+      <Route
+        element={<DeveloperCreate />}
+        path={developerBrowseRoutes.create()}
+      />
+      <Route element={<DeveloperView />} path={developerBrowseRoutes.view()} />
+      <Route element={<DeveloperEdit />} path={developerBrowseRoutes.edit()} />
 
-      <Route path={fileBrowseRoutes.index()} element={<FileIndex />} />
+      <Route element={<FileIndex />} path={fileBrowseRoutes.index()} />
     </Routes>
   )
 }

@@ -1,23 +1,34 @@
 import { useSnackbar } from 'notistack'
 import { useCallback, useMemo } from 'react'
-import { SubmitHandler, UseFormSetValue } from 'react-hook-form'
+import type { SubmitHandler, UseFormSetValue } from 'react-hook-form'
+import type { UseQueryResult } from 'react-query'
 import { useMutation, useQuery } from 'react-query'
-import { useNavigate, useParams } from 'react-router-dom'
-import { ApplicationUpdateDto } from '../../models'
+import { useParams } from 'react-router-dom'
+
+import type { Application, ApplicationUpdateDto } from '../../models'
 import { ApplicationService } from '../../services'
 import { getKeys } from '../../utils/object/get-keys'
 
-export const useApplicationEdit = (setValue: UseFormSetValue<ApplicationUpdateDto>) => {
+type UseApplicationEdit = UseQueryResult<Application> & {
+  onSubmit: SubmitHandler<ApplicationUpdateDto>
+}
+
+export const useApplicationEdit = (
+  setValue: UseFormSetValue<ApplicationUpdateDto>
+): UseApplicationEdit => {
   const params = useParams()
   const { applicationId } = params
-  const navigate = useNavigate()
   const { enqueueSnackbar } = useSnackbar()
 
   const queryData = useQuery(
     ['application edit', applicationId],
     () => ApplicationService.findOne(Number(applicationId)),
     {
-      select: ({ data }) => data,
+      enabled: Boolean(applicationId),
+      keepPreviousData: false,
+      onError: (error) => {
+        console.error(JSON.stringify(error))
+      },
       onSuccess: (data) => {
         getKeys(data).forEach((key) => {
           if (
@@ -33,32 +44,33 @@ export const useApplicationEdit = (setValue: UseFormSetValue<ApplicationUpdateDt
           setValue(key, data[key])
         })
       },
-      onError: (error) => {
-        console.log(JSON.stringify(error))
-      },
-      enabled: !!applicationId,
-      keepPreviousData: false,
+      select: ({ data }: { data: Application }) => data
     }
   )
 
   const { mutateAsync } = useMutation(
     'update application',
-    (data: ApplicationUpdateDto) => ApplicationService.update(Number(applicationId), data),
+    (data: ApplicationUpdateDto) =>
+      ApplicationService.update(Number(applicationId), data),
     {
+      onError: () => {
+        enqueueSnackbar('При обновлении приложения произошла ошибка', {
+          variant: 'error'
+        })
+      },
       onSuccess: () => {
         enqueueSnackbar('Приложение обновлено', { variant: 'success' })
-      },
-      onError: (error) => {
-        enqueueSnackbar('При обновлении приложения произошла ошибка', { variant: 'error' })
-      },
+      }
     }
   )
 
-  const onSubmit: SubmitHandler<ApplicationUpdateDto> = useCallback(async (data) => {
-    console.log(data)
-    //await mutateAsync(data)
-    //navigate(applicationBrowseRoutes.index())
-  }, [])
+  const onSubmit: SubmitHandler<ApplicationUpdateDto> = useCallback(
+    async (data) => {
+      await mutateAsync(data)
+      // navigate(applicationBrowseRoutes.index())
+    },
+    [mutateAsync]
+  )
 
   return useMemo(() => ({ onSubmit, ...queryData }), [onSubmit, queryData])
 }

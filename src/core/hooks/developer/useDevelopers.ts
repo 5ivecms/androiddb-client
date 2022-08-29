@@ -1,30 +1,61 @@
 import { useMemo, useState } from 'react'
+import type { UseQueryResult } from 'react-query'
 import { useQuery } from 'react-query'
-import { DeveloperSearch } from '../../models/developer.model'
+
+import type { Developer } from '../../models/developer.model'
 import { DeveloperService } from '../../services'
-import { Order } from '../../types'
+import type { FindAllResponse } from '../../types'
+import type { Order, Search, SearchOptions } from '../../types/search-options'
 import { useDebounce } from '../useDebounce'
 
-export const useDevelopers = () => {
+type UseDevelopers = SearchOptions & UseQueryResult<FindAllResponse<Developer>>
+
+export const useDevelopers = (): UseDevelopers => {
   const [page, setPage] = useState<number>(1)
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<string>('id')
-  const [search, setSearch] = useState<DeveloperSearch>({} as DeveloperSearch)
-  const debouncedSearch = useDebounce<DeveloperSearch>(search, 500)
+  const [search, setSearch] = useState<Search>({})
+  const debouncedSearch = useDebounce<Search>(search, 500)
 
   const queryData = useQuery(
     ['developers list', page, order, orderBy, debouncedSearch],
-    () => DeveloperService.search({ page, order, orderBy, search: debouncedSearch }),
+    () =>
+      DeveloperService.search({
+        order,
+        orderBy,
+        page,
+        search: debouncedSearch
+      }),
     {
-      select: ({ data }) => data,
       onError: (error) => {
-        console.log(JSON.stringify(error))
+        console.error(JSON.stringify(error))
       },
+      select: ({ data }) => data
     }
   )
 
   return useMemo(
-    () => ({ ...queryData, page, setPage, order, setOrder, orderBy, setOrderBy, search, setSearch }),
-    [queryData, page, setPage, order, setOrder, orderBy, setOrderBy, search, setSearch]
+    () => ({
+      ...queryData,
+      order,
+      orderBy,
+      page,
+      search,
+      setOrder,
+      setOrderBy,
+      setPage,
+      setSearch
+    }),
+    [
+      queryData,
+      page,
+      setPage,
+      order,
+      setOrder,
+      orderBy,
+      setOrderBy,
+      search,
+      setSearch
+    ]
   )
 }

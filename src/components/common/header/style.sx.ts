@@ -1,30 +1,30 @@
-import { SxProps } from '@mui/material'
+import type { SxProps } from '@mui/material'
 
 export const toolbar: SxProps = {
-  justifyContent: 'start',
+  justifyContent: 'start'
 }
 
 export const logoIcon: SxProps = {
   display: 'flex',
-  mr: 1,
+  mr: 1
 }
 
 export const logoText: SxProps = {
-  mr: 2,
+  color: 'inherit',
   display: 'flex',
   fontFamily: 'monospace',
   fontWeight: 700,
-  color: 'inherit',
-  textDecoration: 'none',
+  mr: 2,
+  textDecoration: 'none'
 }
 
 export const linksContainer: SxProps = {
-  flexGrow: 1,
   display: 'flex',
+  flexGrow: 1
 }
 
 export const linkMenu: SxProps = {
-  my: 2,
   color: 'white',
   display: 'block',
+  my: 2
 }

@@ -1,7 +1,8 @@
 import { Add } from '@mui/icons-material'
 import { Button } from '@mui/material'
-import { FC } from 'react'
+import type { FC } from 'react'
 import { Link } from 'react-router-dom'
+
 import { DeveloperDataTable } from '../../../components/developers'
 import { PageHeader, PageTitle } from '../../../components/ui'
 import { developerBrowseRoutes } from '../../../core/config/browse-routes.config'
@@ -13,7 +14,12 @@ const DeveloperIndex: FC = () => {
       <PageHeader
         left={<PageTitle title="Разработчики" />}
         right={
-          <Button variant="contained" component={Link} to={developerBrowseRoutes.create()} endIcon={<Add />}>
+          <Button
+            component={Link}
+            endIcon={<Add />}
+            to={developerBrowseRoutes.create()}
+            variant="contained"
+          >
             Добавить
           </Button>
         }

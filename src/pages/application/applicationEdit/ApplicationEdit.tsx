@@ -1,27 +1,27 @@
 import { Button, FormControl, Grid, Paper, TextField } from '@mui/material'
-import { FC } from 'react'
+import type { FC } from 'react'
 import { useForm } from 'react-hook-form'
-import { TextEditor } from '../../../components/common'
 
-import AsyncAutocomplete from '../../../components/common/asyncAutocomplete/AsyncAutocomplete'
-import { MultipleFileUploadField, PageHeader, PageTitle } from '../../../components/ui'
+import {
+  MultipleFileUploadField,
+  PageHeader,
+  PageTitle
+} from '../../../components/ui'
 import { useApplicationEdit } from '../../../core/hooks/application'
-import { ApplicationUpdateDto } from '../../../core/models'
-import { DeveloperService } from '../../../core/services'
+import type { ApplicationUpdateDto } from '../../../core/models'
 import { AdminLayout } from '../../../layouts'
+
+const REQUIRED_FIELD_ERROR = 'Поле не может быть пустым'
 
 const ApplicationEdit: FC = () => {
   const {
     handleSubmit,
     register,
     setValue,
-    control,
-    formState: { errors },
+    formState: { errors }
   } = useForm<ApplicationUpdateDto>({ mode: 'onChange' })
 
   const { onSubmit, data, isLoading, isFetching } = useApplicationEdit(setValue)
-
-  console.log(data)
 
   return (
     <AdminLayout>
@@ -30,99 +30,105 @@ const ApplicationEdit: FC = () => {
           <PageHeader left={<PageTitle title={data.title} />} showBackButton />
           <form onSubmit={handleSubmit(onSubmit)}>
             <Paper sx={{ p: 3 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <FormControl fullWidth sx={{ mb: 3 }}>
+              <Grid spacing={2} container>
+                <Grid xs={6} item>
+                  <FormControl sx={{ mb: 3 }} fullWidth>
                     <TextField
-                      {...register('title', { required: 'Поле не может быть пустым' })}
+                      {...register('title', {
+                        required: REQUIRED_FIELD_ERROR
+                      })}
+                      error={!!errors.title}
+                      helperText={!!errors.title && errors?.title?.message}
                       label="Имя тега"
                       placeholder="Имя тега"
-                      error={!!errors.title}
-                      helperText={!!errors.title && errors.title.message}
                     />
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={6}>
-                  <FormControl fullWidth sx={{ mb: 3 }}>
+                <Grid xs={6} item>
+                  <FormControl sx={{ mb: 3 }} fullWidth>
                     <TextField
-                      {...register('pdalifeUrl', { required: 'Поле не может быть пустым' })}
+                      {...register('pdalifeUrl', {
+                        required: REQUIRED_FIELD_ERROR
+                      })}
+                      error={errors.pdalifeUrl !== undefined}
+                      helperText={
+                        errors.pdalifeUrl !== undefined &&
+                        errors.pdalifeUrl.message
+                      }
                       label="Ссылка на pdflife"
                       placeholder="Ссылка на pdflife"
-                      error={!!errors.pdalifeUrl}
-                      helperText={!!errors.pdalifeUrl && errors.pdalifeUrl.message}
                     />
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={6}>
-                  <FormControl fullWidth sx={{ mb: 3 }}>
+                <Grid xs={6} item>
+                  <FormControl sx={{ mb: 3 }} fullWidth>
                     <TextField
-                      {...register('thumb', { required: 'Поле не может быть пустым' })}
+                      {...register('thumb', {
+                        required: REQUIRED_FIELD_ERROR
+                      })}
+                      error={errors.thumb !== undefined}
+                      helperText={
+                        errors.thumb !== undefined && errors.thumb.message
+                      }
                       label="Миниатюра"
                       placeholder="Миниатюра"
-                      error={!!errors.thumb}
-                      helperText={!!errors.thumb && errors.thumb.message}
                     />
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={6}>
-                  <FormControl fullWidth sx={{ mb: 3 }}>
+                <Grid xs={6} item>
+                  <FormControl sx={{ mb: 3 }} fullWidth>
                     <TextField
-                      {...register('googlePlayUrl', { required: 'Поле не может быть пустым' })}
+                      {...register('googlePlayUrl', {
+                        required: REQUIRED_FIELD_ERROR
+                      })}
+                      error={errors.googlePlayUrl !== undefined}
+                      helperText={
+                        errors.googlePlayUrl !== undefined &&
+                        errors.googlePlayUrl.message
+                      }
                       label="Google Play"
                       placeholder="Google Play"
-                      error={!!errors.googlePlayUrl}
-                      helperText={!!errors.googlePlayUrl && errors.googlePlayUrl.message}
                     />
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={6}>
-                  <FormControl fullWidth sx={{ mb: 3 }}>
-                    <AsyncAutocomplete
-                      name="developerId"
-                      label="Разработчик"
-                      size="medium"
-                      loadOptions={(term) => DeveloperService.search({ search: { name: term } })}
-                      onChange={() => console.log()}
-                    />
-                  </FormControl>
+                <Grid xs={6} item>
+                  <FormControl sx={{ mb: 3 }} fullWidth />
                 </Grid>
 
-                <Grid item xs={6}>
-                  <FormControl fullWidth sx={{ mb: 3 }}>
+                <Grid xs={6} item>
+                  <FormControl sx={{ mb: 3 }} fullWidth>
                     <TextField
                       {...register('lang')}
+                      error={errors.lang !== undefined}
+                      helperText={
+                        errors.lang !== undefined && errors.lang.message
+                      }
                       label="Язык"
                       placeholder="Язык"
-                      error={!!errors.lang}
-                      helperText={!!errors.lang && errors.lang.message}
                     />
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12}>
-                  <FormControl fullWidth sx={{ mb: 3 }}>
-                    <TextEditor control={control} name="description" defaultValue={data.description} />
-                  </FormControl>
+                <Grid xs={12} item>
+                  <FormControl sx={{ mb: 3 }} fullWidth />
                 </Grid>
 
-                <Grid item xs={12}>
-                  <FormControl fullWidth sx={{ mb: 3 }}>
-                    <TextEditor control={control} name="shortDescription" defaultValue={data.shortDescription} />
-                  </FormControl>
+                <Grid xs={12} item>
+                  <FormControl sx={{ mb: 3 }} fullWidth />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid xs={12} item>
                   <MultipleFileUploadField />
                 </Grid>
               </Grid>
 
-              <Grid item xs={12}></Grid>
+              <Grid xs={12} item />
 
-              <Button variant="contained" type="submit">
+              <Button type="submit" variant="contained">
                 Сохранить
               </Button>
             </Paper>

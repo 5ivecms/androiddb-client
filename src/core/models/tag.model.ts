@@ -8,4 +8,4 @@ export interface TagSearch {
   title?: string
 }
 
-export interface TagUpdateDto extends Omit<Partial<Tag>, 'id'> {}
+export type TagUpdateDto = Omit<Partial<Tag>, 'id'>

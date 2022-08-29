@@ -1,22 +1,27 @@
+import type { AxiosResponse } from 'axios'
 import QueryString from 'qs'
+
 import { axiosPublic } from '../api/api.instances'
 import { tagsApiUrl } from '../config/api-routes.config'
-import { Tag, TagSearch, TagUpdateDto } from '../models/tag.model'
-import { FindAllResponse, SearchParams } from '../types'
+import type { Tag, TagSearch, TagUpdateDto } from '../models/tag.model'
+import type { FindAllResponse } from '../types'
+import type { SearchParams } from '../types/search-options'
 
 export const TagService = {
-  search: (params: SearchParams<TagSearch>) => {
-    return axiosPublic.get<FindAllResponse<Tag>>(tagsApiUrl.search(), {
-      params,
-      paramsSerializer: (params) => QueryString.stringify(params),
-    })
-  },
-
-  findOne: (id: string | number) => {
+  findOne: (id: number): Promise<AxiosResponse<Tag>> => {
     return axiosPublic.get<Tag>(tagsApiUrl.findOne(id))
   },
 
-  update: (id: number, data: TagUpdateDto) => {
-    return axiosPublic.patch(tagsApiUrl.update(id), data)
+  search: (
+    params: SearchParams<TagSearch>
+  ): Promise<AxiosResponse<FindAllResponse<Tag>>> => {
+    return axiosPublic.get<FindAllResponse<Tag>>(tagsApiUrl.search(), {
+      params,
+      paramsSerializer: () => QueryString.stringify(params)
+    })
   },
+
+  update: (id: number, data: TagUpdateDto): Promise<AxiosResponse<Tag>> => {
+    return axiosPublic.patch(tagsApiUrl.update(id), data)
+  }
 }

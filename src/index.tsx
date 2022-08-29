@@ -4,29 +4,30 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
+
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
+      refetchOnWindowFocus: false
+    }
+  }
 })
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <CssBaseline />
     <BrowserRouter>
       <SnackbarProvider
-        maxSnack={5}
         anchorOrigin={{
-          vertical: 'bottom',
           horizontal: 'right',
+          vertical: 'bottom'
         }}
         autoHideDuration={2000}
+        maxSnack={5}
       >
         <QueryClientProvider client={queryClient}>
           <App />

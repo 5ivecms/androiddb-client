@@ -1,29 +1,42 @@
+import type { AxiosResponse } from 'axios'
 import QueryString from 'qs'
+
 import { axiosPublic } from '../api/api.instances'
 import { categoriesApiUrl } from '../config/api-routes.config'
-import { Category, CategorySearch, CategoryUpdateDto } from '../models'
-import { FindAllResponse, SearchParams } from '../types'
+import type { Category, CategorySearch, CategoryUpdateDto } from '../models'
+import type { FindAllResponse } from '../types'
+import type { SearchParams } from '../types/search-options'
 
 export const CategoryService = {
-  search: (params: SearchParams<CategorySearch>) => {
-    return axiosPublic.get<FindAllResponse<Category>>(categoriesApiUrl.search(), {
-      params,
-      paramsSerializer: (params) => QueryString.stringify(params),
-    })
+  findAll: (
+    params: SearchParams<CategorySearch> = {}
+  ): Promise<AxiosResponse<FindAllResponse<Category>>> => {
+    return axiosPublic.get<FindAllResponse<Category>>(
+      categoriesApiUrl.findAll(),
+      {
+        params,
+        paramsSerializer: () => QueryString.stringify(params)
+      }
+    )
   },
 
-  findOne: (id: string | number) => {
+  findOne: (id: number): Promise<AxiosResponse<Category>> => {
     return axiosPublic.get<Category>(categoriesApiUrl.findOne(id))
   },
 
-  findAll: (params: SearchParams<CategorySearch> = {}) => {
-    return axiosPublic.get<FindAllResponse<Category>>(categoriesApiUrl.findAll(), {
-      params,
-      paramsSerializer: (params) => QueryString.stringify(params),
-    })
+  search: (
+    params: SearchParams<CategorySearch>
+  ): Promise<AxiosResponse<FindAllResponse<Category>>> => {
+    return axiosPublic.get<FindAllResponse<Category>>(
+      categoriesApiUrl.search(),
+      {
+        params,
+        paramsSerializer: () => QueryString.stringify(params)
+      }
+    )
   },
 
-  update: (id: number, data: CategoryUpdateDto) => {
+  update: (id: number, data: CategoryUpdateDto): Promise<AxiosResponse> => {
     return axiosPublic.patch(categoriesApiUrl.update(id), data)
-  },
+  }
 }

@@ -1,5 +1,6 @@
 import { Box, Container } from '@mui/material'
-import { FC, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
+
 import { Header } from '../components/common'
 
 interface Props {

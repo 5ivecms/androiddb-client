@@ -1,9 +1,9 @@
-import { Application } from './application.model'
+import type { Application } from './application.model'
 
 export interface Developer {
+  applications?: Application[]
   id: number
   name: string
-  applications?: Application[]
 }
 
 export interface DeveloperSearch {
@@ -12,6 +12,6 @@ export interface DeveloperSearch {
 }
 
 export interface DeveloperUpdateDto {
-  name: string
   applicationIds: number[]
+  name: string
 }

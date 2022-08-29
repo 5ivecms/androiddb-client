@@ -1,22 +1,22 @@
-import { Category } from './category.model'
-import { Developer } from './developer.model'
-import { Screenshot } from './screenshot.model'
+import type { Category } from './category.model'
+import type { Developer } from './developer.model'
+import type { Screenshot } from './screenshot.model'
 
 export interface Application {
-  id: number
-  title: string
-  thumb: string
-  shortDescription: string
+  applicationVersions?: any
+  categories?: Category[]
   description: string
-  pdalifeUrl: string
+  developer?: Developer
   googlePlayUrl: string
+  id: number
   lang: string
   parsingStatus: number
-  developer?: Developer
-  categories?: Category[]
-  tags?: any
+  pdalifeUrl: string
   screenshots?: Screenshot[]
-  applicationVersions?: any
+  shortDescription: string
+  tags?: any
+  thumb: string
+  title: string
 }
 
 export interface ApplicationSearch {
@@ -25,16 +25,16 @@ export interface ApplicationSearch {
 }
 
 export interface ApplicationUpdateDto {
-  title: string
-  thumb: string
+  categoryIds: number[]
   description: string
-  shortDescription: string
-  pdalifeUrl: string
+  developerId: number
+  googlePlayUrl: string
   lang: string
   parsingStatus: number
-  googlePlayUrl: string
-  developerId: number
-  tagIds: number[]
-  categoryIds: number[]
+  pdalifeUrl: string
   screenshotIds: number[]
+  shortDescription: string
+  tagIds: number[]
+  thumb: string
+  title: string
 }

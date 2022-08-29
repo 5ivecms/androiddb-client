@@ -1,7 +1,8 @@
 import { ArrowBackIosNewOutlined } from '@mui/icons-material'
 import { Box, IconButton } from '@mui/material'
-import { FC, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { backIconSx, pageHeaderContainer, pageHeaderLeftSx } from './style.sx'
 
 interface PageHeaderProps {
@@ -10,10 +11,14 @@ interface PageHeaderProps {
   showBackButton?: boolean
 }
 
-const PageHeader: FC<PageHeaderProps> = ({ left, right, showBackButton = false }) => {
+const PageHeader: FC<PageHeaderProps> = ({
+  left,
+  right,
+  showBackButton = false
+}) => {
   const navigate = useNavigate()
 
-  const goBack = () => {
+  const goBack = (): void => {
     navigate(-1)
   }
 
@@ -21,13 +26,19 @@ const PageHeader: FC<PageHeaderProps> = ({ left, right, showBackButton = false }
     <Box sx={pageHeaderContainer}>
       <Box sx={pageHeaderLeftSx}>
         {showBackButton && (
-          <IconButton sx={backIconSx} size="medium" color="info" aria-label="back" onClick={goBack}>
+          <IconButton
+            aria-label="back"
+            color="info"
+            onClick={goBack}
+            size="medium"
+            sx={backIconSx}
+          >
             <ArrowBackIosNewOutlined />
           </IconButton>
         )}
-        {left || null}
+        {left || <></>}
       </Box>
-      <Box>{right || null}</Box>
+      <Box>{right || <></>}</Box>
     </Box>
   )
 }

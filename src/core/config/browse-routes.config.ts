@@ -1,39 +1,43 @@
 export const baseBrowseRoutes = {
-  notFound: () => '*',
-  home: () => '/',
+  home: (): string => '/',
+  notFound: (): string => '*'
 }
 
 export const applicationBrowseRoutes = {
-  index: () => '/applications',
-  create: () => `/application/create`,
-  view: (to: string | number = ':applicationId') => `/application/view/${to}`,
-  edit: (to: string | number = ':applicationId') => `/application/edit/${to}`,
+  create: (): string => '/application/create',
+  edit: (to: number | string = ':applicationId'): string =>
+    `/application/edit/${to}`,
+  index: (): string => '/applications',
+  view: (to: number | string = ':applicationId'): string =>
+    `/application/view/${to}`
 }
 
 export const categoryBrowseRoutes = {
-  index: () => '/categories',
-  create: () => `/category/create`,
-  view: (to: string | number = ':categoryId') => `/category/view/${to}`,
-  edit: (to: string | number = ':categoryId') => `/category/edit/${to}`,
+  create: (): string => '/category/create',
+  edit: (to: number | string = ':categoryId'): string => `/category/edit/${to}`,
+  index: (): string => '/categories',
+  view: (to: number | string = ':categoryId'): string => `/category/view/${to}`
 }
 
 export const tagBrowseRoutes = {
-  index: () => '/tags',
-  create: () => `/tag/create`,
-  view: (to: string | number = ':tagId') => `/tag/view/${to}`,
-  edit: (to: string | number = ':tagId') => `/tag/edit/${to}`,
+  create: (): string => '/tag/create',
+  edit: (to: number | string = ':tagId'): string => `/tag/edit/${to}`,
+  index: (): string => '/tags',
+  view: (to: number | string = ':tagId'): string => `/tag/view/${to}`
 }
 
 export const developerBrowseRoutes = {
-  index: () => '/developers',
-  create: () => `/developer/create`,
-  view: (to: string | number = ':developerId') => `/developer/view/${to}`,
-  edit: (to: string | number = ':developerId') => `/developer/edit/${to}`,
+  create: (): string => '/developer/create',
+  edit: (to: number | string = ':developerId'): string =>
+    `/developer/edit/${to}`,
+  index: (): string => '/developers',
+  view: (to: number | string = ':developerId'): string =>
+    `/developer/view/${to}`
 }
 
 export const fileBrowseRoutes = {
-  index: () => '/files',
-  create: () => `/file/create`,
-  view: (to: string | number = ':fileId') => `/file/view/${to}`,
-  edit: (to: string | number = ':fileId') => `/file/edit/${to}`,
+  create: (): string => '/file/create',
+  edit: (to: number | string = ':fileId'): string => `/file/edit/${to}`,
+  index: (): string => '/files',
+  view: (to: number | string = ':fileId'): string => `/file/view/${to}`
 }

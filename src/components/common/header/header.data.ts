@@ -2,25 +2,25 @@ import {
   applicationBrowseRoutes,
   categoryBrowseRoutes,
   developerBrowseRoutes,
-  tagBrowseRoutes,
+  tagBrowseRoutes
 } from '../../../core/config/browse-routes.config'
-import { IHeaderMenuItem } from './header.interfaces'
+import type { IHeaderMenuItem } from './header.interfaces'
 
 export const headerMenu: IHeaderMenuItem[] = [
   {
     title: 'Приложения',
-    url: applicationBrowseRoutes.index(),
+    url: applicationBrowseRoutes.index()
   },
   {
     title: 'Категории',
-    url: categoryBrowseRoutes.index(),
+    url: categoryBrowseRoutes.index()
   },
   {
     title: 'Теги',
-    url: tagBrowseRoutes.index(),
+    url: tagBrowseRoutes.index()
   },
   {
     title: 'Разработчики',
-    url: developerBrowseRoutes.index(),
-  },
+    url: developerBrowseRoutes.index()
+  }
 ]

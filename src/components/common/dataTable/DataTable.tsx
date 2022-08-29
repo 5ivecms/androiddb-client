@@ -1,30 +1,15 @@
-import { Delete, FilterAltOff, Refresh } from '@mui/icons-material'
-import {
-  Box,
-  Checkbox,
-  CircularProgress,
-  IconButton,
-  Paper,
-  SelectChangeEvent,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material'
-import { object } from 'dot-object'
-import { ChangeEvent, FC, MouseEvent, useCallback, useMemo, useState } from 'react'
-import { DataTableProps } from './data-table.interfaces'
-import DataTableDeleteDialog from './DataTableDeleteDialog'
-import DataTableDeleteManyDialog from './DataTableDeleteManyDialog'
-import DataTableFilter from './DataTableFilter'
+import { Box, Paper, Table, TableBody, TableContainer } from '@mui/material'
+import type { FC, MouseEvent, ReactElement } from 'react'
+import { useCallback, useState } from 'react'
+
+import type { DataTableProps } from './data-table.interfaces'
 import DataTableHead from './DataTableHead'
 import DataTablePagination from './DataTablePagination'
+import DataTableProvider from './DataTableProvider'
 import DataTableRow from './DataTableRow'
-import { circularProgressFetching, fetchingSx, preloaderContainer, subAction, subActionsContainer } from './style.sx'
 
 const DataTable: FC<DataTableProps> = ({
+  actions,
   rows,
   columns,
   order,
@@ -32,25 +17,17 @@ const DataTable: FC<DataTableProps> = ({
   setOrder,
   setOrderBy,
   limit,
-  total,
-  loading,
-  fetching,
   page,
-  setPage,
-  search,
-  setSearch,
-  actions = {},
-  onRefresh,
-  onDelete,
-  onDeleteMany,
-}) => {
-  const fields = useMemo(() => columns.reduce((acc, column) => ({ ...acc, [column.field]: column }), {}), [columns])
+  total,
+  setPage
+}): ReactElement => {
   const [selected, setSelected] = useState<number[]>([])
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
-  const [deleteItemId, setDeleteItemId] = useState<number | null>(null)
-  const [deleteManyDialogOpen, setDeleteManyDialogOpen] = useState<boolean>(false)
+  const [deleteItemId, setDeleteItemId] = useState<number | undefined>()
 
-  const isSelected = useCallback((id: number) => selected.includes(id), [selected])
+  const isSelected = useCallback(
+    (id: number) => selected.includes(id),
+    [selected]
+  )
 
   const onSelect = useCallback(
     (id: number) => (_: MouseEvent<HTMLButtonElement>) => {
@@ -64,195 +41,62 @@ const DataTable: FC<DataTableProps> = ({
     []
   )
 
-  const onSelectAll = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      if (event.target.checked) {
-        setSelected(rows.map((row) => row.id))
-        return
-      }
-      setSelected([])
-    },
-    [rows]
-  )
+  const handleDelete = useCallback((id: number) => {
+    setDeleteItemId(id)
+  }, [])
 
   const handleRequestSort = useCallback(
-    (_: MouseEvent<unknown>, property: any) => {
+    (_: MouseEvent<unknown>, property: number | string | symbol) => {
       const isAsc = orderBy === property && order === 'asc'
       setOrder(isAsc ? 'desc' : 'asc')
-      setOrderBy(property)
+      setOrderBy(String(property))
     },
     [setOrder, setOrderBy, order, orderBy]
   )
 
   const handlePageChange = useCallback(
     (_: unknown, newPage: number) => {
+      console.info(newPage)
       setPage(Number(newPage))
     },
     [setPage]
   )
 
-  const updateSearch = useCallback(
-    (name: string, value: string) => {
-      const params = { ...search, [name]: value }
-      const newParams = Object.keys(params).filter((param) => params[param] !== '')
-      const newSearch = newParams.reduce((acc, item) => ({ ...acc, [item]: params[item] }), {})
-      setSearch({ ...newSearch })
-      setSelected([])
-      setPage(1)
-    },
-    [search, setSearch, setPage]
-  )
-
-  const onInputChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target
-      updateSearch(name, value)
-    },
-    [updateSearch]
-  )
-
-  const onSelectChange = useCallback(
-    (e: SelectChangeEvent) => {
-      const { name, value } = e.target
-      updateSearch(name, value)
-    },
-    [updateSearch]
-  )
-
-  const onAutocompleteChange = useCallback(
-    (name: string, value: string) => {
-      const params = { ...search, [name]: value }
-      const newParams = Object.keys(params).filter((param) => params[param] !== '')
-      const newSearch = newParams.reduce((acc, item) => ({ ...acc, [item]: params[item] }), {})
-      setSearch({ ...object(newSearch) })
-    },
-    [search, setSearch]
-  )
-
-  const handleResetFilter = useCallback(() => {
-    setSearch({})
-  }, [setSearch])
-
-  const toggleDeleteDialog = useCallback(() => {
-    setDeleteDialogOpen((prevState) => !prevState)
-  }, [])
-
-  const handleDelete = useCallback(
-    (id: number) => {
-      setDeleteItemId(id)
-      toggleDeleteDialog()
-    },
-    [toggleDeleteDialog]
-  )
-
-  const deleteConfirm = useCallback(() => {
-    if (deleteItemId) {
-      toggleDeleteDialog()
-      onDelete(deleteItemId)
-    }
-  }, [deleteItemId, toggleDeleteDialog, onDelete])
-
-  const toggleDeleteManyDialog = useCallback(() => {
-    setDeleteManyDialogOpen((prevState) => !prevState)
-  }, [])
-
-  const confirmDeleteMany = useCallback(() => {
-    onDeleteMany(selected.join(','))
-    setSelected([])
-    toggleDeleteManyDialog()
-  }, [toggleDeleteManyDialog, onDeleteMany, setSelected, selected])
+  console.info(deleteItemId)
 
   return (
-    <>
-      <Box sx={!loading && fetching ? fetchingSx : {}}>
-        {!loading && (
-          <Paper>
-            <TableContainer>
-              <Table aria-labelledby="Data table">
-                <DataTableHead
-                  columns={columns}
-                  order={order}
-                  orderBy={orderBy}
-                  onRequestSort={handleRequestSort}
-                  actions={Object.keys(actions).length > 0}
-                />
-                <TableHead>
-                  <TableRow>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        indeterminate={selected.length > 0 && selected.length < limit}
-                        checked={limit > 0 && selected.length === limit}
-                        onChange={onSelectAll}
-                        inputProps={{ 'aria-label': 'select all desserts' }}
-                      />
-                    </TableCell>
-                    <DataTableFilter
-                      onInputChange={onInputChange}
-                      onSelectChange={onSelectChange}
-                      onAutocompleteChange={onAutocompleteChange}
-                      columns={columns}
-                      search={search}
-                    />
-                    <TableCell sx={{ py: 1 }}>
-                      <Box sx={subActionsContainer}>
-                        <Box sx={subAction}>
-                          {Object.keys(search).length > 0 && (
-                            <IconButton color="default" aria-label="reset filter" onClick={handleResetFilter}>
-                              <FilterAltOff />
-                            </IconButton>
-                          )}
-                        </Box>
-                        <Box sx={subAction}>
-                          <IconButton color="default" aria-label="refresh" onClick={onRefresh}>
-                            <Refresh />
-                          </IconButton>
-                        </Box>
-                        <Box sx={subAction}>
-                          {selected.length > 0 && (
-                            <IconButton color="error" aria-label="delete selected" onClick={toggleDeleteManyDialog}>
-                              <Delete />
-                            </IconButton>
-                          )}
-                        </Box>
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <DataTableRow
-                      selected={isSelected(row.id)}
-                      fields={fields}
-                      row={row}
-                      actions={actions}
-                      onSelect={onSelect}
-                      key={row.id}
-                      onDelete={handleDelete}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <DataTablePagination total={total} limit={limit} page={page} onPageChange={handlePageChange} />
-          </Paper>
-        )}
-        {!loading && fetching && <CircularProgress sx={circularProgressFetching} size={50} />}
+    <DataTableProvider actions={actions} columns={columns}>
+      <Box>
+        <Paper>
+          <TableContainer>
+            <Table>
+              <DataTableHead
+                onRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+              />
+              <TableBody>
+                {rows.map((row) => (
+                  <DataTableRow
+                    key={row.id}
+                    onDelete={handleDelete}
+                    onSelect={onSelect}
+                    row={row}
+                    selected={isSelected(row.id)}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <DataTablePagination
+            limit={limit}
+            onPageChange={handlePageChange}
+            page={page}
+            total={total}
+          />
+        </Paper>
       </Box>
-
-      {loading && (
-        <Box sx={preloaderContainer}>
-          <CircularProgress />
-        </Box>
-      )}
-
-      <DataTableDeleteDialog open={deleteDialogOpen} onClose={toggleDeleteDialog} onConfirm={deleteConfirm} />
-      <DataTableDeleteManyDialog
-        open={deleteManyDialogOpen}
-        onClose={toggleDeleteManyDialog}
-        onConfirm={confirmDeleteMany}
-      />
-    </>
+    </DataTableProvider>
   )
 }
 

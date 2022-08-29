@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import type { FC } from 'react'
+
 import { PageHeader, PageTitle } from '../../../components/ui'
 import { useTag } from '../../../core/hooks/tag'
 import { AdminLayout } from '../../../layouts'
@@ -8,7 +9,10 @@ const TagView: FC = () => {
 
   return (
     <AdminLayout>
-      <PageHeader left={<PageTitle title={data?.title || ''} />} showBackButton />
+      <PageHeader
+        left={<PageTitle title={data?.title || ''} />}
+        showBackButton
+      />
     </AdminLayout>
   )
 }

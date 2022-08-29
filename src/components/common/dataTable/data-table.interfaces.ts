@@ -1,75 +1,25 @@
-import { SelectChangeEvent } from '@mui/material'
-import { ChangeEvent, MouseEvent, ReactNode } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 
-export type Order = 'asc' | 'desc'
+import type { Order } from '../../../core/types/search-options'
 
-type InputType = 'input' | 'select' | 'autocomplete'
+type InputType = 'autocomplete' | 'input' | 'select'
 
-export interface DataTableHeaderColumnProps {
+export interface DataTableRow {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any
+  id: number
+}
+
+export interface DataTableColumn {
   field: string
   fieldType: InputType
   headerName: string
-  numeric: boolean
-  width?: string
-  render?: (data: any) => ReactNode
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   loadOptions?: (term: string) => Promise<any>
-}
-
-export interface DataTableHeadProps {
-  columns: DataTableHeaderColumnProps[]
-  order: Order
-  orderBy: string
-  onRequestSort: (event: MouseEvent<unknown>, property: any) => void
-  actions?: boolean
-}
-
-export interface DataTableFilterProps {
-  columns: any[]
-  onInputChange: (e: ChangeEvent<HTMLInputElement>) => void
-  onSelectChange: (e: SelectChangeEvent) => void
-  onAutocompleteChange: (_: any, value: any) => void
-  search: any
-}
-
-export interface DataTableRowProps {
-  fields: {
-    [key: string]: any
-  }
-  row: any
-  actions?: DataTableActions
-  selected: boolean
-  onSelect: (id: number) => (_: MouseEvent<HTMLButtonElement>) => void
-  onDelete: (id: number) => void
-}
-
-export interface DataTablePaginationProps {
-  total: number
-  limit: number
-  page: number
-  onPageChange: (event: unknown, newPage: number) => void
-}
-
-export interface DataTableProps {
-  loading: boolean
-  fetching: boolean
-  columns: DataTableHeaderColumnProps[]
-  rows: any[]
-  order: Order
-  orderBy: string
-  setOrder: (order: Order) => void
-  setOrderBy: (orderBy: string) => void
-  limit: number
-  total: number
-  page: number
-  setPage: (newPage: number) => void
-  actions?: DataTableActions
-  search: {
-    [key: string]: string
-  }
-  setSearch: (data: { [key: string]: string }) => void
-  onRefresh: () => void
-  onDelete: (id: number) => void
-  onDeleteMany: (ids: string) => void
+  numeric: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  render?: (data: any) => ReactNode
+  width?: string
 }
 
 export interface DataTableAction {
@@ -78,19 +28,56 @@ export interface DataTableAction {
 }
 
 export interface DataTableActions {
-  view?: DataTableAction
-  edit?: DataTableAction
   canDelete?: true
+  edit?: DataTableAction
+  view?: DataTableAction
 }
 
-export interface DataTableDeleteDialogProps {
-  open: boolean
-  onClose: () => void
-  onConfirm: () => void
+export interface DataTableHeadProps {
+  onRequestSort: (
+    event: MouseEvent<unknown>,
+    property: number | string | symbol
+  ) => void
+  order: Order
+  orderBy: string
 }
 
-export interface DataTableDeleteManyDialogProps {
-  open: boolean
-  onClose: () => void
-  onConfirm: () => void
+export interface DataTableRowProps {
+  onDelete: (id: number) => void
+  onSelect: (id: number) => (_: MouseEvent<HTMLButtonElement>) => void
+  row: DataTableRow
+  selected: boolean
+}
+
+export interface DataTableProps {
+  actions: DataTableActions
+  columns: DataTableColumn[]
+  limit: number
+  order: Order
+  orderBy: string
+  page: number
+  rows: DataTableRow[]
+  setOrder: (order: Order) => void
+  setOrderBy: (orderBy: string) => void
+  setPage: (page: number) => void
+  total: number
+}
+
+export interface DataTablePaginationProps {
+  limit: number
+  onPageChange: (event: unknown, page: number) => void
+  page: number
+  total: number
+}
+
+export interface DataTableContextState {
+  actions?: DataTableActions | undefined
+  columns: DataTableColumn[]
+  fields: Record<string, DataTableColumn>
+}
+
+export interface DataTableProviderProps {
+  actions?: DataTableActions | undefined
+  children: ReactNode
+  columns: DataTableColumn[]
 }

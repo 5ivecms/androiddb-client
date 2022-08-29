@@ -1,22 +1,31 @@
 import { Box, Pagination, Typography } from '@mui/material'
-import { FC, memo } from 'react'
-import { DataTablePaginationProps } from './data-table.interfaces'
+import type { FC } from 'react'
+import { memo } from 'react'
+
+import type { DataTablePaginationProps } from './data-table.interfaces'
 import { paginationContainer, paginationStat } from './style.sx'
 
-const DataTablePagination: FC<DataTablePaginationProps> = ({ total, limit, page, onPageChange }) => {
+const DataTablePagination: FC<DataTablePaginationProps> = ({
+  total,
+  limit,
+  page,
+  onPageChange
+}) => {
   return (
     <Box sx={paginationContainer}>
       <Pagination
-        size="medium"
         color="primary"
         count={Math.ceil(total / limit)}
-        page={page}
         onChange={onPageChange}
+        page={Number(page)}
+        size="medium"
         showFirstButton
         showLastButton
       />
       <Box sx={paginationStat}>
-        <Typography fontSize={14}>Всего: {total.toLocaleString()}</Typography>
+        <Typography fontSize={14}>
+          Всего: {String(total).toLocaleString()}
+        </Typography>
       </Box>
     </Box>
   )

@@ -1,12 +1,17 @@
-import { SxProps } from '@mui/material'
+import type { SxProps } from '@mui/material'
 
-export const pageHeaderContainer: SxProps = { display: 'flex', width: '100%', justifyContent: 'space-between', my: 3 }
+export const pageHeaderContainer: SxProps = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  my: 3,
+  width: '100%'
+}
 
 export const pageHeaderLeftSx: SxProps = {
-  display: 'flex',
   alignItems: 'center',
+  display: 'flex'
 }
 
 export const backIconSx: SxProps = {
-  mr: 1,
+  mr: 1
 }

@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import type { FC } from 'react'
+
 import { PageHeader, PageTitle } from '../../../components/ui'
 import { useDeveloper } from '../../../core/hooks/developer'
 import { AdminLayout } from '../../../layouts'

@@ -1,11 +1,11 @@
-import { Application } from './application.model'
+import type { Application } from './application.model'
 
 export interface Category {
-  id: number
-  title: string
-  children: Category[]
-  parent?: Category
   applications?: Application
+  children: Category[]
+  id: number
+  parent?: Category
+  title: string
 }
 
 export interface CategorySearch {

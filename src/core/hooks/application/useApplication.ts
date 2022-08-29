@@ -1,9 +1,12 @@
 import { useMemo } from 'react'
+import type { UseQueryResult } from 'react-query'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
+
+import type { Application } from '../../models'
 import { ApplicationService } from '../../services'
 
-export const useApplication = () => {
+export const useApplication = (): UseQueryResult<Application> => {
   const params = useParams()
   const { applicationId } = params
 
@@ -11,10 +14,10 @@ export const useApplication = () => {
     ['find one application', applicationId],
     () => ApplicationService.findOne(Number(applicationId)),
     {
-      select: ({ data }) => data,
       onError: (error) => {
-        console.log(JSON.stringify(error))
+        console.error(JSON.stringify(error))
       },
+      select: ({ data }) => data
     }
   )
 

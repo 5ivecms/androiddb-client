@@ -1,5 +1,7 @@
+import type { ReactElement } from 'react'
+
 import { AppRouter } from './routes'
 
-const App = () => <AppRouter />
+const App = (): ReactElement => <AppRouter />
 
 export default App
