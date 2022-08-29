@@ -126,7 +126,7 @@ const ApplicationEdit: FC = () => {
                 <Grid xs={12} item>
                   <MultipleFileUploadField />
                 </Grid>
-                da
+                da1
                 <ImageList cols={3} sx={{ width: '100%' }}>
                   {data?.screenshots !== undefined &&
                     data.screenshots.map((screenshot) => (
