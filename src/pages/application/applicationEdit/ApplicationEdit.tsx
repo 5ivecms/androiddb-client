@@ -1,4 +1,12 @@
-import { Button, FormControl, Grid, Paper, TextField } from '@mui/material'
+import {
+  Button,
+  FormControl,
+  Grid,
+  ImageList,
+  ImageListItem,
+  Paper,
+  TextField
+} from '@mui/material'
 import type { FC } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -23,6 +31,8 @@ const ApplicationEdit: FC = () => {
 
   const { onSubmit, data, isLoading, isFetching } = useApplicationEdit(setValue)
 
+  console.info(data)
+
   return (
     <AdminLayout>
       {!isLoading && !isFetching && data && (
@@ -44,7 +54,6 @@ const ApplicationEdit: FC = () => {
                     />
                   </FormControl>
                 </Grid>
-
                 <Grid xs={6} item>
                   <FormControl sx={{ mb: 3 }} fullWidth>
                     <TextField
@@ -61,7 +70,6 @@ const ApplicationEdit: FC = () => {
                     />
                   </FormControl>
                 </Grid>
-
                 <Grid xs={6} item>
                   <FormControl sx={{ mb: 3 }} fullWidth>
                     <TextField
@@ -77,7 +85,6 @@ const ApplicationEdit: FC = () => {
                     />
                   </FormControl>
                 </Grid>
-
                 <Grid xs={6} item>
                   <FormControl sx={{ mb: 3 }} fullWidth>
                     <TextField
@@ -94,11 +101,9 @@ const ApplicationEdit: FC = () => {
                     />
                   </FormControl>
                 </Grid>
-
                 <Grid xs={6} item>
                   <FormControl sx={{ mb: 3 }} fullWidth />
                 </Grid>
-
                 <Grid xs={6} item>
                   <FormControl sx={{ mb: 3 }} fullWidth>
                     <TextField
@@ -112,18 +117,28 @@ const ApplicationEdit: FC = () => {
                     />
                   </FormControl>
                 </Grid>
-
                 <Grid xs={12} item>
                   <FormControl sx={{ mb: 3 }} fullWidth />
                 </Grid>
-
                 <Grid xs={12} item>
                   <FormControl sx={{ mb: 3 }} fullWidth />
                 </Grid>
-
                 <Grid xs={12} item>
                   <MultipleFileUploadField />
                 </Grid>
+                <ImageList cols={3} sx={{ width: '100%' }}>
+                  {data?.screenshots !== undefined &&
+                    data.screenshots.map((screenshot) => (
+                      <ImageListItem key={screenshot.url}>
+                        <img
+                          alt=""
+                          loading="lazy"
+                          src={`${screenshot.url}?w=164&h=164&fit=crop&auto=format`}
+                          srcSet={`${screenshot.url}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                        />
+                      </ImageListItem>
+                    ))}
+                </ImageList>
               </Grid>
 
               <Grid xs={12} item />
