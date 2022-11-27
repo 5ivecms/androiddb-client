@@ -24,3 +24,7 @@ export const developerApiUrl = {
   search: (): string => '/developer/search',
   update: (id: number): string => `/developer/${id}`
 }
+
+export const fileApiUrl = {
+  upload: (): string => `/file/upload`
+}

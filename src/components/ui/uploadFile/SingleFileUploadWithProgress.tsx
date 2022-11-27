@@ -1,54 +1,30 @@
+import { Grid, LinearProgress } from '@mui/material'
 import type { FC } from 'react'
-import { useEffect, useState } from 'react'
+import { memo } from 'react'
 
-interface Props {
+import FileHeader from './FileHeader'
+
+interface SingleFileUploadWithProgressProps {
   file: File
+  onDelete: (file: File) => void
+  progress: number
 }
 
-const uploadFile = (
-  file: File,
-  onProgress: (percentage: number) => void
-): Promise<unknown> => {
-  const url = '...'
-
-  return new Promise((res, rej) => {
-    const xhr = new XMLHttpRequest()
-    xhr.open('POST', url)
-
-    xhr.addEventListener('load', () => {
-      res('Сохранено')
-    })
-
-    xhr.addEventListener('onerror', (evt) => {
-      rej(evt)
-    })
-
-    xhr.upload.addEventListener('progress', (event) => {
-      if (event.lengthComputable) {
-        const percentage = (event.loaded / event.total) * 100
-        onProgress(Math.round(percentage))
-      }
-    })
-
-    const formData = new FormData()
-    formData.append('file', file)
-
-    xhr.send(formData)
-  })
+const SingleFileUploadWithProgress: FC<SingleFileUploadWithProgressProps> = ({
+  file,
+  onDelete,
+  progress
+}) => {
+  return (
+    <Grid sx={{ mb: 1 }} xs={12} item>
+      <FileHeader file={file} onDelete={onDelete} />
+      <LinearProgress
+        sx={{ height: 10 }}
+        value={progress}
+        variant="determinate"
+      />
+    </Grid>
+  )
 }
 
-const SingleFileUploadWithProgress: FC<Props> = ({ file }) => {
-  const [progress, setProgress] = useState<number>(0)
-
-  useEffect(() => {
-    const upload = async (): Promise<void> => {
-      const url = await uploadFile(file, setProgress)
-      console.info(url)
-    }
-    upload()
-  }, [file])
-
-  return <div>SFU - {progress}</div>
-}
-
-export default SingleFileUploadWithProgress
+export default memo(SingleFileUploadWithProgress)

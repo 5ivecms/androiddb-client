@@ -1,20 +1,20 @@
 import {
+  Box,
   Button,
   FormControl,
   Grid,
   ImageList,
   ImageListItem,
   Paper,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material'
 import type { FC } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import {
-  MultipleFileUploadField,
-  PageHeader,
-  PageTitle
-} from '../../../components/ui'
+import { ScreenshotsManager } from '../../../components/screenshots'
+import { PageHeader, PageTitle } from '../../../components/ui'
 import { useApplicationEdit } from '../../../core/hooks/application'
 import type { ApplicationUpdateDto } from '../../../core/models'
 import { AdminLayout } from '../../../layouts'
@@ -22,16 +22,21 @@ import { AdminLayout } from '../../../layouts'
 const REQUIRED_FIELD_ERROR = 'Поле не может быть пустым'
 
 const ApplicationEdit: FC = () => {
+  const [showScreenshotManager, setShowScreenshotManager] =
+    useState<boolean>(false)
+
   const {
     handleSubmit,
     register,
     setValue,
     formState: { errors }
-  } = useForm<ApplicationUpdateDto>({ mode: 'onChange' })
+  } = useForm<ApplicationUpdateDto>()
 
   const { onSubmit, data, isLoading, isFetching } = useApplicationEdit(setValue)
 
-  console.info(data)
+  const onCloseScreenshotsManager = (): void => {
+    setShowScreenshotManager(false)
+  }
 
   return (
     <AdminLayout>
@@ -123,10 +128,26 @@ const ApplicationEdit: FC = () => {
                 <Grid xs={12} item>
                   <FormControl sx={{ mb: 3 }} fullWidth />
                 </Grid>
-                <Grid xs={12} item>
-                  <MultipleFileUploadField />
-                </Grid>
-                da1
+
+                <Box
+                  sx={{
+                    alignContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    mt: 4,
+                    width: '100%'
+                  }}
+                >
+                  <Typography variant="h4">Скриншоты</Typography>
+                  <Button
+                    onClick={() => setShowScreenshotManager(true)}
+                    variant="contained"
+                  >
+                    Добавить
+                  </Button>
+                </Box>
+
                 <ImageList cols={3} sx={{ width: '100%' }}>
                   {data?.screenshots !== undefined &&
                     data.screenshots.map((screenshot) => (
@@ -151,6 +172,11 @@ const ApplicationEdit: FC = () => {
           </form>
         </>
       )}
+
+      <ScreenshotsManager
+        onClose={onCloseScreenshotsManager}
+        show={showScreenshotManager}
+      />
     </AdminLayout>
   )
 }

@@ -62,7 +62,7 @@
     "@typescript-eslint/no-unsafe-call": "error",
     "@typescript-eslint/no-unsafe-member-access": "error",
     "@typescript-eslint/no-unused-vars": [
-      "error",
+      "warn",
       {
         "argsIgnorePattern": "^_",
         "ignoreRestSiblings": true
@@ -134,15 +134,7 @@
     "unicorn/prefer-switch": "off",
     "unicorn/prevent-abbreviations": "off",
     "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
-      "error",
-      {
-        "vars": "all",
-        "varsIgnorePattern": "^_",
-        "args": "after-used",
-        "argsIgnorePattern": "^_"
-      }
-    ]
+    "unused-imports/no-unused-vars": "off"
   },
   "parserOptions": {
     "project": "tsconfig.json"

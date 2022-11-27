@@ -54,9 +54,11 @@
     "slick-carousel": "^1.8.1",
     "suneditor": "^2.43.14",
     "suneditor-react": "^3.4.1",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/dot-object": "^2.1.2",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.45",
@@ -65,6 +67,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-query": "^1.2.9",
     "@types/react-slick": "^0.23.10",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
     "eslint": "^8.22.0",
